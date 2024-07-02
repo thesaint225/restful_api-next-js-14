@@ -4,6 +4,7 @@ const CategorySchema = new Schema(
   {
     title: {
       type: String,
+      required: true,
     },
     user: {
       type: Schema.Types.ObjectId,
