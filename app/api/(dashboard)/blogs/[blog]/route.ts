@@ -4,6 +4,7 @@ import Blog from "@/app/lib/modals/blogs";
 import User from "@/app/lib/modals/users";
 import Category from "@/app/lib/modals/categories";
 import { Types } from "mongoose";
+import { json } from "stream/consumers";
 
 export const GET = async (request: Request, context: { params: any }) => {
   const blogId = context.params.blog;
@@ -68,6 +69,61 @@ export const GET = async (request: Request, context: { params: any }) => {
     return new NextResponse(
       JSON.stringify(
         { message: "error occured while fetching blog" },
+        error.message
+      ),
+      { status: 500 }
+    );
+  }
+};
+
+export const PATCH = async (request: Request, context: { params: any }) => {
+  const blogId = context.params.blog;
+  try {
+    const body = await request.json();
+    const { title, description } = body;
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
+    if (!userId || !Types.ObjectId.isValid(userId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "user Id not found" }),
+        { status: 400 }
+      );
+    }
+
+    if (!blogId || !Types.ObjectId.isValid(blogId)) {
+      return new NextResponse(
+        JSON.stringify({ message: "blog id not found" }),
+        { status: 400 }
+      );
+    }
+    await connect();
+    const user = await User.findById(userId);
+    if (!user) {
+      return new NextResponse(JSON.stringify({ message: "user not found " }), {
+        status: 404,
+      });
+    }
+
+    const blog = await Blog.findOne({
+      _id: blogId,
+      user: userId,
+    });
+    if (!blog) {
+      return new NextResponse(JSON.stringify({ message: "blog not found " }), {
+        status: 400,
+      });
+    }
+    const updatedblog = await Blog.findByIdAndUpdate(
+      blogId,
+      { title, description },
+      { new: true }
+    );
+
+    return new NextResponse(JSON.stringify({ updatedblog }), { status: 200 });
+  } catch (error: any) {
+    return new NextResponse(
+      JSON.stringify(
+        { message: "error occurred while updating blog" },
         error.message
       ),
       { status: 500 }
