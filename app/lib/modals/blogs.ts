@@ -1,5 +1,4 @@
 import { Schema, SchemaType, model, models } from "mongoose";
-import Category from "./categories";
 
 const blogSchema = new Schema(
   {
@@ -11,7 +10,7 @@ const blogSchema = new Schema(
       type: String,
     },
     user: { type: Schema.Types.ObjectId, ref: "User" },
-    Category: { type: Schema.Types.ObjectId, ref: "Category" },
+    category: { type: Schema.Types.ObjectId, ref: "Category" },
   },
   {
     timestamps: true,

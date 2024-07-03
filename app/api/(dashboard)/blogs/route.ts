@@ -60,59 +60,6 @@ export const GET = async (request: Request) => {
   }
 };
 
-// export const POST = async (request: Request) => {
-//   try {
-//     const { searchParams } = new URL(request.url);
-//     const userId = searchParams.get("userId");
-//     const categoryId = searchParams.get("categoryId");
-//     const body = await request.json();
-//     const { title, description } = body;
-//     if (!userId) {
-//       return new NextResponse(JSON.stringify({ message: "user Id no found" }), {
-//         status: 400,
-//       });
-//     }
-
-//     if (!categoryId) {
-//       return new NextResponse(
-//         JSON.stringify({ message: "category id not found" }),
-//         { status: 400 }
-//       );
-//     }
-//     await connect();
-//     const user = await User.findById(userId);
-//     if (!user) {
-//       return new NextResponse(JSON.stringify({ message: "user not found" }), {
-//         status: 404,
-//       });
-//     }
-//     const category = await Category.findById(categoryId);
-//     if (!category) {
-//       return new NextResponse(
-//         JSON.stringify({ message: "category not found" }),
-//         { status: 404 }
-//       );
-//     }
-//     const newBLog = new Blog({
-//       title,
-//       description,
-//       user: new Types.ObjectId(userId),
-//       category: new Types.ObjectId(categoryId),
-//     });
-
-//     await newBLog.save();
-//     return new NextResponse(
-//       JSON.stringify({ message: "blog successfully created", blog: newBLog }),
-//       { status: 201 }
-//     );
-//   } catch (error: any) {
-//     return new NextResponse(
-//       JSON.stringify({ message: "something went wrong", error: error.message }),
-//       { status: 500 }
-//     );
-//   }
-// };
-
 export const POST = async (request: Request) => {
   try {
     const { searchParams } = new URL(request.url);
