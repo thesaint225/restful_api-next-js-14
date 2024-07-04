@@ -4,7 +4,6 @@ import Blog from "@/app/lib/modals/blogs";
 import User from "@/app/lib/modals/users";
 import Category from "@/app/lib/modals/categories";
 import { Types } from "mongoose";
-import { json } from "stream/consumers";
 
 export const GET = async (request: Request, context: { params: any }) => {
   const blogId = context.params.blog;
